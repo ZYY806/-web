@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}公交游德州 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">公交游德州</h2>
+        <p class="section-desc">不用开车，坐上公交就能逛遍德州的商场、公园、夜市和景点。</p>
+
+        <div class="tags">
+            <a href="{{ url_for('attractions') }}" class="{{ 'active' if not active }}">全部</a>
+            {% for c in cats %}
+            <a href="{{ url_for('attractions', category=c) }}" class="{{ 'active' if active==c }}">{{ c }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="grid">
+            {% for row in rows %}
+            <div class="card">
+                <div class="card-img">
+                    <img src="{{ row.image_url or url_for('static', filename='img/do-activities.jpg') }}" alt="{{ row.name }}" class="zoomable">
+                    <span class="card-tag">{{ row.category }}</span>
+                </div>
+                <div class="card-body">
+                    <h3>{{ row.name }}</h3>
+                    <p>{{ row.description }}</p>
+                    <p class="bus">🚌 {{ row.bus_route }}</p>
+                    <p class="meta">📍 {{ row.address }}　🕒 {{ row.hours }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if not rows %}
+        <p class="empty-tip">这个分类暂时还没有内容哦。</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

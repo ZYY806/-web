@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}九达天衢 · 韵动德州 — 德州文旅网站{% endblock %}
+{% block content %}
+
+<div class="hero">
+    <h1>探索德州</h1>
+    <p>一座充满惊喜的城市：京杭大运河穿城而过，有“天下第一鸡”美誉的德州扒鸡，还有董仲舒、颜真卿等历史名人的足迹。古老与现代在这里相遇，等你用脚步去揭晓。</p>
+    <p><a href="{{ url_for('attractions') }}" class="button">现在就出发</a></p>
+</div>
+
+<section id="see-and-do">
+    <div class="wrap">
+        <h2 class="section-title">去哪儿玩</h2>
+        <p class="section-desc">从公交可达的游玩地，到地道美食、文化场馆、小剧场，一站看全。</p>
+        <div class="grid">
+            <a class="card" href="{{ url_for('attractions') }}">
+                <div class="card-img"><img src="{{ url_for('static', filename='img/do-activities.jpg') }}" alt="公交游德州" class="zoomable"><span class="card-tag">公交可达</span></div>
+                <div class="card-body"><h3>公交游德州</h3><p>坐公交就能到的商场、公园、夜市，附公交路线。</p></div>
+            </a>
+            <a class="card" href="{{ url_for('food') }}">
+                <div class="card-img"><img src="{{ url_for('static', filename='img/do-food.jpg') }}" alt="德州美食" class="zoomable"><span class="card-tag">必吃</span></div>
+                <div class="card-body"><h3>德州美食</h3><p>扒鸡、驴肉火烧、运河酥鱼……把德州味道吃遍。</p></div>
+            </a>
+            <a class="card" href="{{ url_for('culture') }}">
+                <div class="card-img"><img src="{{ url_for('static', filename='img/do-culture.jpg') }}" alt="德州文化" class="zoomable"><span class="card-tag">人文</span></div>
+                <div class="card-body"><h3>德州文化</h3><p>博物馆、图书馆、文化馆，读懂这座城市。</p></div>
+            </a>
+            <a class="card" href="{{ url_for('routes') }}">
+                <div class="card-img"><img src="{{ url_for('static', filename='img/plan-sulu.jpg') }}" alt="漫游路线" class="zoomable"><span class="card-tag">路线</span></div>
+                <div class="card-body"><h3>漫游路线</h3><p>按美食/文化/亲子/文艺排好的城市一日游路线。</p></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="video-box" id="video">
+    <div class="wrap">
+        <h2 class="section-title">宣传视频</h2>
+        <video controls poster="{{ url_for('static', filename='img/video-background.jpg') }}">
+            <source src="{{ url_for('static', filename='video/dezhou.mp4') }}" type="video/mp4">
+            您的浏览器不支持视频播放，请升级浏览器。
+        </video>
+    </div>
+</section>
+
+<section id="hot">
+    <div class="wrap">
+        <h2 class="section-title">热门推荐</h2>
+        <p class="section-desc">根据大家的热度精选出来的德州玩法。</p>
+
+        <h3 style="color:#004466;margin-bottom:16px;">🏙 热门游玩地</h3>
+        <div class="grid">
+            {% for p in hot_places %}
+            <div class="card">
+                <div class="card-img"><img src="{{ p.image_url or url_for('static', filename='img/do-activities.jpg') }}" alt="{{ p.name }}" class="zoomable"><span class="card-tag">{{ p.category }}</span></div>
+                <div class="card-body">
+                    <h3>{{ p.name }}</h3>
+                    <p>{{ p.description }}</p>
+                    <p class="bus">🚌 {{ p.bus_route }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3 style="color:#004466;margin:36px 0 16px;">🍗 热门美食</h3>
+        <div class="grid">
+            {% for r in hot_food %}
+            <div class="card">
+                <div class="card-img"><img src="{{ r.image_url or url_for('static', filename='img/plan-food.jpg') }}" alt="{{ r.name }}" class="zoomable"><span class="card-tag">{{ r.cuisine }}</span></div>
+                <div class="card-body">
+                    <h3>{{ r.name }}</h3>
+                    <p>招牌：{{ r.recommend_dish }}　评分：{{ r.rating }}　人均：{{ r.price_level }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3 style="color:#004466;margin:36px 0 16px;">🎭 热门演出</h3>
+        <div class="grid">
+            {% for t in hot_theaters %}
+            <div class="card">
+                <div class="card-body">
+                    <h3>{{ t.name }}</h3>
+                    <p>{{ t.description }}</p>
+                    <p class="meta">类型：{{ t.show_type }}　{{ t.schedule }}　票价 {{ t.price_level }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="forum-preview">
+    <div class="wrap">
+        <h2 class="section-title">最新驴友分享</h2>
+        <div class="post-list">
+            {% for p in latest_posts %}
+            <div class="post">
+                <h3><a href="{{ url_for('post_detail', pid=p.id) }}">{{ p.title }}</a></h3>
+                <p>{{ p.content[:60] }}{% if p.content|length > 60 %}……{% endif %}</p>
+                <div class="info"><span class="category">{{ p.category }}</span>　{{ p.nickname }} · {{ p.created_at.strftime('%m-%d %H:%M') }} · 点赞 {{ p.likes }} · 浏览 {{ p.views }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <p class="text-center"><a class="btn btn-yellow" href="{{ url_for('forum') }}">进入驴友广场</a></p>
+    </div>
+</section>
+
+<section class="review">
+    <div class="wrap">
+        <div class="quote-card">
+            <img src="{{ url_for('static', filename='img/profile.jpg') }}" alt="游客头像">
+            <div>
+                <blockquote>来德州吃到了最地道的扒鸡，在减河湿地吹着晚风看落日，又去董子园感受了汉儒文化。这是一座让人越住越喜欢的城市！</blockquote>
+                <figcaption><strong>一位来自山东的游客</strong> · 中国 · 山东</figcaption>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

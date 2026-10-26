@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}美食打卡 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">德州美食打卡</h2>
+        <p class="section-desc">扒鸡、驴肉火烧、运河酥鱼……把德州最有名的味道一次性吃遍。</p>
+
+        <div class="grid">
+            {% for row in rows %}
+            <div class="card">
+                <div class="card-img">
+                    <img src="{{ row.image_url or url_for('static', filename='img/plan-food.jpg') }}" alt="{{ row.name }}" class="zoomable">
+                    <span class="card-tag">{{ row.cuisine }}</span>
+                </div>
+                <div class="card-body">
+                    <h3>{{ row.name }}</h3>
+                    <p>{{ row.description }}</p>
+                    <p class="bus">招牌：{{ row.recommend_dish }}</p>
+                    <p class="meta">⭐ {{ row.rating }}　人均 {{ row.price_level }}　📍 {{ row.address }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

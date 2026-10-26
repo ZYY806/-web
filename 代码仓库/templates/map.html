@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}智慧地图 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">智慧地图</h2>
+        <p class="section-desc">把景点、美食、文化场馆一次性标在地图上，想去哪点点看，还能查到公交。</p>
+
+        {% if not ak %}
+        <div class="map-tip">
+            ⚠️ 地图功能需要百度地图开放平台的密钥。请在项目根目录的 <code>.env</code> 中配置
+            <code>BAIDU_MAP_AK</code>（申请地址：https://lbsyun.baidu.com/apiconsole/key），
+            刷新本页即可看到地图。
+        </div>
+        {% endif %}
+
+        <div class="map-box" id="map-container"></div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+{% if ak %}
+<script>
+    window._BMap_AK = "{{ ak }}";
+    window._SPOTS = {{ spots | tojson }};
+</script>
+<script src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak={{ ak }}" type="text/javascript"></script>
+<script>
+    // 等待百度地图加载完成后初始化
+    window.addEventListener('load', function () {
+        if (typeof BMapGL === 'undefined') {
+            setTimeout(function () {
+                if (typeof BMapGL !== 'undefined') initMap();
+            }, 500);
+            return;
+        }
+        initMap();
+    });
+
+    function initMap() {
+        // 以德州市中心为中心
+        var map = new BMapGL.Map('map-container');
+        map.centerAndZoom(new BMapGL.Point(116.37, 37.445), 12);
+        map.enableScrollWheelZoom(true);
+        map.addControl(new BMapGL.ScaleControl());
+        map.addControl(new BMapGL.NavigationControl3D());
+
+        var spots = window._SPOTS || [];
+        var colors = { '商场': '#ff6600', '公园': '#22aa44', '景点': '#22aa44', '文化街区': '#9966cc', '夜市': '#cc5533' };
+        spots.forEach(function (s) {
+            if (!s.lng || !s.lat) return;
+            var pt = new BMapGL.Point(parseFloat(s.lng), parseFloat(s.lat));
+            var icon = new BMapGL.Icon(
+                'https://maponline0.bdimg.com/stimage/red.png',
+                new BMapGL.Size(22, 22), { offset: new BMapGL.Size(-11, -11) }
+            );
+            var marker = new BMapGL.Marker(pt, { icon: icon });
+            map.addOverlay(marker);
+            var content = '<div style="font-size:14px;line-height:1.6;min-width:150px;">'
+                + '<b style="color:#004466;">' + s.name + '</b><br>'
+                + '<span style="color:#006699;">' + (s.kind || '') + '</span><br>'
+                + '地址：' + (s.address || '-') + '<br>'
+                + (s.bus_route ? '公交：' + s.bus_route + '<br>' : '')
+                + '</div>';
+            var info = new BMapGL.InfoWindow(content, { width: 200, title: '德州文旅' });
+            marker.addEventListener('click', function () { map.openInfoWindow(info, pt); });
+        });
+    }
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,5 @@
+# 本项目需要的 Python 第三方库
+# 安装方法：命令行执行  pip install -r requirements.txt
+flask==3.0.3
+pymysql==1.1.1
+python-dotenv==1.0.1

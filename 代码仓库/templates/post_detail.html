@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} · 驴友广场{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <div class="post-detail">
+            <h1>{{ post.title }}</h1>
+            <div class="info" style="color:#999;font-size:14px;">
+                <span class="category" style="background:#eef4f8;color:#004466;padding:2px 10px;border-radius:12px;">{{ post.category }}</span>
+                {{ post.nickname }} · {{ post.created_at.strftime('%Y-%m-%d %H:%M') }} · 浏览 {{ post.views }}
+            </div>
+            <div class="content">{{ post.content }}</div>
+            {% if post.image_url %}
+            <img class="zoomable" src="{{ post.image_url }}" alt="{{ post.title }}" style="max-width:100%;border-radius:8px;margin:16px 0;cursor:zoom-in;">
+            {% endif %}
+            <p>
+                <form method="post" action="{{ url_for('like_post', pid=post.id) }}" style="display:inline;">
+                    <button class="btn btn-primary" type="submit">👍 点赞（{{ post.likes }}）</button>
+                </form>
+                <a class="btn btn-yellow" href="{{ url_for('forum') }}" style="margin-left:10px;">返回广场</a>
+            </p>
+        </div>
+
+        <h3 style="color:#004466;margin:30px 0 16px;">评论（{{ comments|length }}）</h3>
+        <div class="post-detail">
+            {% for c in comments %}
+            <div class="comment-item">
+                <span class="nick">{{ c.nickname }}</span><span class="time">{{ c.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                <p>{{ c.content }}</p>
+            </div>
+            {% else %}
+            <p style="color:#999;">还没有评论，来抢沙发～</p>
+            {% endfor %}
+
+            {% if session.get('user_id') %}
+            <form method="post" action="{{ url_for('add_comment', pid=post.id) }}" style="margin-top:20px;">
+                <textarea name="content" placeholder="写下你的评论……" style="width:100%;padding:10px;border:1px solid #ccd8e0;border-radius:6px;" required></textarea>
+                <p style="margin-top:10px;"><button class="btn btn-primary" type="submit">发表评论</button></p>
+            </form>
+            {% else %}
+            <p style="color:#999;margin-top:20px;">请<a href="{{ url_for('login') }}">登录</a>后参与评论。</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

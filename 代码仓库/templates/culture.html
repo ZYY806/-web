@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}文化场馆 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">文化场馆</h2>
+        <p class="section-desc">图书馆、博物馆、文化馆、纪念馆——读懂德州的城市记忆。</p>
+
+        <div class="tags">
+            <a href="{{ url_for('culture') }}" class="{{ 'active' if not active }}">全部</a>
+            {% for t in types %}
+            <a href="{{ url_for('culture', type=t) }}" class="{{ 'active' if active==t }}">{{ t }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="grid">
+            {% for row in rows %}
+            <div class="card">
+                <div class="card-img">
+                    <img src="{{ row.image_url or url_for('static', filename='img/do-culture.jpg') }}" alt="{{ row.name }}" class="zoomable">
+                    <span class="card-tag">{{ row.site_type }}</span>
+                </div>
+                <div class="card-body">
+                    <h3>{{ row.name }}</h3>
+                    <p>{{ row.description }}</p>
+                    <p class="meta">🕒 {{ row.hours }}　门票：{{ row.ticket }}　📍 {{ row.address }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

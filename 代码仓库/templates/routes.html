@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}漫游路线 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">城市漫游路线</h2>
+        <p class="section-desc">不想做攻略？按主题挑一条路线，跟着走就行。</p>
+
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>路线</th>
+                    <th>主题</th>
+                    <th>时长</th>
+                    <th>游玩点</th>
+                    <th>介绍</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td><strong>{{ row.title }}</strong></td>
+                    <td>{{ row.theme }}</td>
+                    <td>{{ row.duration }}</td>
+                    <td>{{ row.stops }}</td>
+                    <td>{{ row.description }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}
