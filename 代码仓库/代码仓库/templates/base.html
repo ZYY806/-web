@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}九达天衢 · 韵动德州{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="wrap">
+            <a class="logo" href="{{ url_for('index') }}">九达天衢<span>·</span>韵动德州</a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint=='index' }}">首页</a></li>
+                    <li><a href="{{ url_for('attractions') }}" class="{{ 'active' if request.endpoint=='attractions' }}">公交游德州</a></li>
+                    <li><a href="{{ url_for('food') }}" class="{{ 'active' if request.endpoint=='food' }}">美食打卡</a></li>
+                    <li><a href="{{ url_for('culture') }}" class="{{ 'active' if request.endpoint=='culture' }}">文化场馆</a></li>
+                    <li><a href="{{ url_for('theater') }}" class="{{ 'active' if request.endpoint=='theater' }}">小剧场</a></li>
+                    <li><a href="{{ url_for('routes') }}" class="{{ 'active' if request.endpoint=='routes' }}">漫游路线</a></li>
+                    <li><a href="{{ url_for('map_page') }}" class="{{ 'active' if request.endpoint=='map_page' }}">智慧地图</a></li>
+                    <li><a href="{{ url_for('forum') }}" class="{{ 'active' if request.endpoint in ['forum','post_detail','new_post'] }}">驴友广场</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint=='contact' }}">联系我们</a></li>
+                </ul>
+            </nav>
+            <div class="user-box">
+                {% if session.get('user_id') %}
+                    你好，{{ session.get('nickname') }} <a href="{{ url_for('logout') }}">退出</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">登录</a>
+                    <a href="{{ url_for('register') }}">注册</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <div class="wrap">
+            <p>九达天衢 · 韵动德州 — 一站式德州文旅信息平台</p>
+            <p>&copy; 2026 三个臭皮匠团队 版权所有 &nbsp;|&nbsp; 用脚步探索这座城市</p>
+        </div>
+    </footer>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="" alt="查看大图">
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

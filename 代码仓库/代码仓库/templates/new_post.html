@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}发布新帖 · 驴友广场{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <div class="form-box">
+            <h2>发布新帖</h2>
+            <form method="post" action="{{ url_for('new_post') }}" enctype="multipart/form-data">
+                <label>标题</label>
+                <input type="text" name="title" placeholder="一句话说清楚你想分享的" required>
+                <label>板块</label>
+                <select name="category">
+                    <option value="游记">游记</option>
+                    <option value="美食">美食</option>
+                    <option value="问答">问答</option>
+                    <option value="避坑">避坑</option>
+                    <option value="其他">其他</option>
+                </select>
+                <label>内容</label>
+                <textarea name="content" placeholder="展开讲讲……" required></textarea>
+                <label>配图（可选，支持 jpg/png/gif/webp）</label>
+                <input type="file" name="image" accept="image/*">
+                <button class="btn btn-primary" type="submit">发布</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

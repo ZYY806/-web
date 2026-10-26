@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}驴友广场 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">驴友广场</h2>
+        <p class="section-desc">分享游记、提问、避坑……每个人都是德州的推荐官。注册登录后就能发帖。</p>
+
+        <div class="tags">
+            <a href="{{ url_for('forum') }}" class="{{ 'active' if not active }}">全部</a>
+            {% for c in cats %}
+            <a href="{{ url_for('forum', category=c) }}" class="{{ 'active' if active==c }}">{{ c }}</a>
+            {% endfor %}
+        </div>
+
+        <p class="text-center" style="margin-bottom:20px;">
+            <a class="btn btn-yellow" href="{{ url_for('new_post') }}">+ 发布新帖</a>
+        </p>
+
+        <div class="post-list">
+            {% for row in rows %}
+            <div class="post">
+                {% if row.image_url %}
+                <a class="post-img-wrap" href="{{ url_for('post_detail', pid=row.id) }}">
+                    <img class="post-img zoomable" src="{{ row.image_url }}" alt="{{ row.title }}">
+                </a>
+                {% endif %}
+                <h3><a href="{{ url_for('post_detail', pid=row.id) }}">{{ row.title }}</a></h3>
+                <p>{{ row.content[:70] }}{% if row.content|length > 70 %}……{% endif %}</p>
+                <div class="info">
+                    <span class="category">{{ row.category }}</span>　
+                    {{ row.nickname }} · {{ row.created_at.strftime('%Y-%m-%d %H:%M') }}　
+                    👍 {{ row.likes }} · 浏览 {{ row.views }} · 💬 {{ row.comment_count }}
+                </div>
+            </div>
+            {% else %}
+            <p class="empty-tip">还没有帖子，快来发第一帖吧！</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

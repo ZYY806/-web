@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}小剧场 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">小剧场演出</h2>
+        <p class="section-desc">音乐剧、相声、脱口秀、评剧——德州的夜晚也有好戏。</p>
+
+        <div class="grid">
+            {% for row in rows %}
+            <div class="card">
+                <div class="card-img">
+                    <img src="{{ row.image_url or url_for('static', filename='img/do-culture.jpg') }}" alt="{{ row.name }}" class="zoomable">
+                    <span class="card-tag">{{ row.show_type }}</span>
+                </div>
+                <div class="card-body">
+                    <h3>{{ row.name }}</h3>
+                    <p>{{ row.description }}</p>
+                    <p class="meta">📅 {{ row.schedule }}　🎫 {{ row.price_level }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}联系我们 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">联系我们</h2>
+        <p class="section-desc">对网站有建议、想投稿合作、或发现信息要更正？给我们留言，或直接发邮件。</p>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>联系我们</h3>
+                <p><strong>德州文旅网站团队</strong><br>三个臭皮匠，赛过诸葛亮。</p>
+                <p>📍 山东省德州市</p>
+                <p>📮 团队邮箱：<a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+                <p>⏰ 通常在 1~2 个工作日内回复</p>
+                <p style="font-size:14px;color:#888;">也可以直接把问题写进留言表单，我们会第一时间处理。</p>
+            </div>
+
+            <div class="contact-form">
+                <form method="post" action="{{ url_for('contact') }}">
+                    <label>姓名</label>
+                    <input type="text" name="name" placeholder="怎么称呼你" required>
+                    <label>邮箱</label>
+                    <input type="email" name="email" placeholder="用于我们回复你" required>
+                    <label>主题</label>
+                    <input type="text" name="subject" placeholder="想聊点什么（选填）">
+                    <label>留言内容</label>
+                    <textarea name="content" placeholder="把你的想法写下来……" required></textarea>
+                    <button class="btn btn-primary" type="submit">发送留言</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

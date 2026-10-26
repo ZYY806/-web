@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}智慧地图 · 九达天衢{% endblock %}
+{% block content %}
+
+<section>
+    <div class="wrap">
+        <h2 class="section-title">智慧地图</h2>
+        <p class="section-desc">把景点、美食、文化场馆一次性标在地图上，想去哪点点看，还能查到公交。</p>
+
+        <div class="map-box">
+            <iframe src="https://map.baidu.com/@116.37,37.445,12z"
+                    width="100%" height="520" style="border:0; border-radius:12px;"
+                    frameborder="0" allowfullscreen loading="lazy"
+                    title="德州市位置地图">
+                您的浏览器不支持iframe嵌入，请<a href="https://map.baidu.com" target="_blank" rel="noopener">点击此处</a>查看地图。
+            </iframe>
+        </div>
+
+        <p style="text-align:center; margin-top:14px; color:#666; font-size:14px; line-height:1.8;">
+            地图由百度地图提供，无需安装即可浏览德州各片区 · 想逐个查看景点详情，请到
+            <a href="/attractions" style="color:#004466; font-weight:600;">公交游德州</a> 板块。
+        </p>
+    </div>
+</section>
+
+{% endblock %}
