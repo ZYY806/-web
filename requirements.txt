@@ -1,0 +1,7 @@
+# 本项目需要的 Python 第三方库
+# 安装方法：命令行执行  pip install -r requirements.txt
+#
+# 说明：网站已不再依赖 MySQL，pymysql 已移除，
+#       装好下面两个库就能直接跑（python app.py）。
+flask==3.0.3
+python-dotenv==1.0.1
